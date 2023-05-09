@@ -5,7 +5,7 @@ MCUFONT = ../encoder/mcufont
 #FONTS = Manrope-SemiBold24 Manrope-SemiBold32 ChivoMono-Medium24 ChivoMono-Medium32 DSEG14Classic-Bold64
 FONTS = Manrope-SemiBold16 Manrope-SemiBold24 Manrope-SemiBold32 \
         DSEG7Classic-Bold16 DSEG7Classic-Bold24 DSEG7Classic-Bold48 \
-        MaterialIcons-Regular16
+        MaterialIcons-Regular16 MaterialIcons-Regular24
 
 # Characters to include in the fonts
 #CHARS = 0-255 0x2010-0x2015
@@ -17,7 +17,7 @@ clean:
 	rm -f $(FONTS:=.c) $(FONTS:=.dat)
 
 fonts.h: $(FONTS:=.c)
-	/bin/echo -e $(foreach font,$(FONTS),'\n#include "'$(font)'.c"') > $@
+	echo $(foreach font,$(FONTS),'\n#include "'$(font)'.c"') > $@
 
 %.c: %.dat $(MCUFONT)
 	$(MCUFONT) rlefont_export $<
@@ -68,3 +68,7 @@ MaterialIcons-Regular16.dat: MaterialIcons-Regular.ttf
 	$(MCUFONT) filter $@ $(CHARS)
 	$(MCUFONT) rlefont_optimize $@ 50
 
+MaterialIcons-Regular24.dat: MaterialIcons-Regular.ttf
+	$(MCUFONT) import_ttf $< 24
+	$(MCUFONT) filter $@ $(CHARS)
+	$(MCUFONT) rlefont_optimize $@ 50
